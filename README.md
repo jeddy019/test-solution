@@ -11,7 +11,11 @@ Required GraphQL endpoint: [here](https://github.com/scandiweb/junior-react-endp
 ### Running this project locally
 
 First clone/download this repository, then
+<<<<<<< HEAD
 clone/download and start the required endpoint and fianlly,
+=======
+clone/download and start the required endpoint. Fianlly,
+>>>>>>> f14b9110250a9e99f631012e3f6871f7726bdf31
 in the project directory, run `npm install` and then `npm start`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
