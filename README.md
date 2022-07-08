@@ -10,12 +10,6 @@ PS: I made some changes based on the detailed feedback I got on my first submiss
 
 Required GraphQL endpoint: [here](https://github.com/scandiweb/junior-react-endpoint)
 
-### Running this project locally
-
-First clone/download this repository, then
-clone/download and start the required endpoint. Fianlly,
-in the project directory, run `npm install` and then `npm start`
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Author
