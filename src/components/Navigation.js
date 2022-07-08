@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-
 import Currency from "./Currency";
 import CartOverlay from "./CartOverlay";
 import { ReactComponent as Logo } from "../svg/logo.svg";
@@ -12,43 +11,71 @@ class Navigation extends Component {
     backdrop: false,
     currencyToggle: false,
     cartOverlay: false,
+    isTop: true,
   };
 
-  onBackdropClick() {
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll = () => {
+    const isTop = window.scrollY < 100;
+    if (isTop !== this.state.isTop) {
+      this.setState({ isTop });
+    }
+  };
+
+  onBackdropClick = () => {
+    document.body.style.overflow = "scroll";
     this.setState({
       backdrop: false,
       currencyToggle: false,
       cartOverlay: false,
     });
-  }
+  };
 
   render() {
-    const { backdrop, currencyToggle, cartOverlay } = this.state;
+    const { backdrop, currencyToggle, cartOverlay, isTop } = this.state;
     const { cartItems, category, symbol } = this.props;
 
     const onCurrencyToggle = () => {
-      if (!backdrop || (backdrop && currencyToggle))
+      if (!backdrop || (backdrop && currencyToggle)) {
         this.setState({
           backdrop: !backdrop,
           currencyToggle: !currencyToggle,
         });
-      if (backdrop && cartOverlay)
+      }
+      if (backdrop && cartOverlay) {
+        document.body.style.overflow = "scroll";
         this.setState({
           backdrop: true,
           currencyToggle: true,
           cartOverlay: false,
         });
+      }
     };
 
     const onCartToggle = () => {
-      if (!backdrop || (backdrop && cartOverlay))
+      if (!backdrop || (backdrop && cartOverlay)) {
+        if (document.body.style.overflow !== "hidden") {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "scroll";
+        }
         this.setState({ backdrop: !backdrop, cartOverlay: !cartOverlay });
-      if (backdrop && currencyToggle)
+      }
+      if (backdrop && currencyToggle) {
+        document.body.style.overflow = "hidden";
         this.setState({
           backdrop: true,
           currencyToggle: false,
           cartOverlay: true,
         });
+      }
     };
 
     const quantityReducer = (accumulator, value) => {
@@ -62,11 +89,15 @@ class Navigation extends Component {
       <nav className="navbar">
         <div className="nav-center">
           <ul className="categories">
-            <li>
+            <li onClick={() => this.onBackdropClick()}>
               {category.map((categoryName, index) => {
                 return (
                   <NavLink
-                    to={categoryName === "all" ? "/" : `/${categoryName}`}
+                    to={
+                      categoryName === this.props.category[0]
+                        ? "/"
+                        : `/${categoryName}`
+                    }
                     key={index}
                   >
                     {categoryName}
@@ -77,7 +108,7 @@ class Navigation extends Component {
           </ul>
           <Logo />
           <div className="right">
-            <div className="categories dropdown">
+            <div className="currency-container">
               <span>{symbol}</span>
               <div className="currency" onClick={onCurrencyToggle}>
                 <button
@@ -93,19 +124,16 @@ class Navigation extends Component {
                 )}
               </div>
             </div>
-            <div className="categories dropdown">
+            <div className="dropdown">
               <button onClick={onCartToggle} className="nav-cart">
                 {cartItems.length === 0 ? (
                   ""
                 ) : (
                   <span className="cart-quantity">{totalQuantity}</span>
                 )}
-                <NavCart style={{ marginTop: "14.5px" }} />
+                <NavCart className="nav-cart-icon" />
               </button>
-              <div
-                className="categories dropdown"
-                style={{ position: "fixed", zIndex: 3 }}
-              >
+              <div className="cart-dropdown">
                 {cartOverlay && (
                   <CartOverlay
                     cartItems={cartItems}
@@ -121,7 +149,9 @@ class Navigation extends Component {
         </div>
         {backdrop && (
           <div
-            className={`backdrop${cartOverlay ? " frame" : ""}`}
+            className={`${
+              cartOverlay ? `${isTop ? "backdrop" : "newBackdrop"} frame` : ""
+            }`}
             onClick={() => this.onBackdropClick()}
           />
         )}

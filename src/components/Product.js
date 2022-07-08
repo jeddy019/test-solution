@@ -1,24 +1,33 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { withRouter } from "./withRouter";
+import { client } from "@tilework/opus";
+import { GET_PRODUCT_BY_ID } from "../queries/config";
 
 import ProductAttributes from "./attributes/ProductAttributes";
 
-export function withRouter(Children) {
-  return (props) => {
-    const match = { params: useParams() };
-    return <Children {...props} match={match} />;
-  };
-}
+const parse = require("html-react-parser");
 
 class Product extends React.Component {
   state = {
+    products: undefined,
     image: "",
-    attributes: this.props.products[0].products.find(
-      (item) => item.id === this.props.match.params.id
-    ).attributes,
+    attributes: [],
     message: "",
     success: "",
   };
+
+  componentDidMount() {
+    client
+      .post(GET_PRODUCT_BY_ID(this.props.match.params.id))
+      .then((response) => {
+        let { product } = response;
+        if (!product) return;
+        else {
+          this.setState({ products: product });
+          this.setState({ attributes: product.attributes });
+        }
+      });
+  }
 
   onImageChange = (image) => {
     this.setState({ image });
@@ -32,11 +41,7 @@ class Product extends React.Component {
   };
 
   render() {
-    const { image, message, success } = this.state;
-
-    const products = this.props.products[0].products.find(
-      (item) => item.id === this.props.match.params.id
-    );
+    const { products, image, message, success } = this.state;
 
     const OnAttributeChange = ({ target }) => {
       const nextState = this.state.attributes.map((attr) => {
@@ -61,10 +66,9 @@ class Product extends React.Component {
       });
     };
 
-    const attrName = products.attributes.map((attr) => attr.name).join(", ");
-
     const conditionalAddToCart = (product) => {
-      const picked = this.state.attributes.map((attr) =>
+      const { products, attributes } = this.state;
+      const picked = attributes.map((attr) =>
         attr.items.find((index) => index.selected === true)
       );
 
@@ -72,7 +76,7 @@ class Product extends React.Component {
         const newId = `${product.id} ${picked.map((i) => i.id).join(" ")}`;
         const updatedProduct = {
           ...product,
-          attributes: this.state.attributes,
+          attributes: attributes,
           quantity: 1,
           id: newId,
         };
@@ -83,6 +87,7 @@ class Product extends React.Component {
         });
         this.setState({ success: "green" });
       } else {
+        const attrName = attributes.map((attr) => attr.name).join(", ");
         this.setState({
           message: `please select an attribute from ${attrName}`,
         });
@@ -90,18 +95,21 @@ class Product extends React.Component {
       }
     };
 
-    return (
+    return products === undefined ? (
+      <h1>Loading...</h1>
+    ) : (
       <div className="single-product">
         <div className="image-section">
           <div className="small-images">
             {products.gallery.map((item, index) => (
-              <img
-                key={index}
-                className="small-img"
-                onClick={() => this.onImageChange(item)}
-                src={item}
-                alt={products.name}
-              />
+              <div className="new-img-container" key={index}>
+                <img
+                  className="small-img"
+                  onClick={() => this.onImageChange(item)}
+                  src={item}
+                  alt={products.name}
+                />
+              </div>
             ))}
           </div>
           <img
@@ -150,10 +158,7 @@ class Product extends React.Component {
           ) : (
             <button className="out-of-stock">out of stock</button>
           )}
-          <div
-            className="description"
-            dangerouslySetInnerHTML={{ __html: products.description }}
-          ></div>
+          <div className="description">{parse(products.description)}</div>
         </div>
       </div>
     );

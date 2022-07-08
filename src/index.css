@@ -64,7 +64,7 @@ Navigation
 }
 
 .categories a {
-  text-transform: uppercase;
+    text-transform: uppercase;
     display: inline-block;
     font-weight: 400;
     margin-right: 0.5rem;
@@ -108,6 +108,13 @@ Navigation
   padding-right: 80px;
 }
 
+.currency-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
 .currency {
   padding-top: 7px;
   padding-left: 17px;
@@ -135,21 +142,34 @@ Navigation
 .dropdown {
   display: flex;
   align-items: center;
-  position: relative;
   cursor: pointer;
 }
 
 .nav-cart {
   background: transparent;
   border: none;
-  margin-left: 15px;
   position: fixed;
-  padding-top: 7px;
-  padding-left: 17px;
-  padding-right: 17px;
-  width: 100px;
+ padding: 5px;
   cursor: pointer;
   z-index: 2;
+}
+
+.nav-cart-icon {
+  margin-top: 14.5px;
+}
+
+.new-nav-cart {
+      background: transparent;
+      border: none;
+      margin-left: 15px;
+      position: fixed;
+      padding-top: 7px;
+      padding-left: 17px;
+      padding-right: 17px;
+      width: 100px;
+      cursor: pointer;
+      z-index: 2;
+      overflow: scroll;
 }
 
 .cart-quantity {
@@ -164,22 +184,38 @@ Navigation
   font-weight: 700;
   font-size: 14px;
   color: var(--c-white);
-  left: 55px;
-  top: 35px;
+  left: 43.5px;
+  top: 33.5px;
+}
+
+.cart-dropdown {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position:fixed;
+  z-index: 3;
+}
+
+.backdrop, .newBackdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  left: 0;
+  transition: all 0.1s linear;
 }
 
 .backdrop {
-  position: absolute;
-  width: 1440px;
-  height: 1650px;
-  top: 80px; 
-  right: 0;
-  left: 0;
+  top: 79px;
 }
 
-.backdrop.frame {
+.newBackdrop {
+  top: 0;
+}
+
+.backdrop.frame, .newBackdrop.frame {
   background: rgba(57, 55, 72, 0.22);
-  z-index: 1;
+  z-index: 2;
 }
 
 /* End of Navigation */
@@ -191,7 +227,7 @@ Currency
 */
 
 .parent-dropdown {
-  display: flex;
+    display: flex;
     flex-direction: column;
     position: absolute;
     background: var(--c-white);
@@ -200,7 +236,7 @@ Currency
     min-height: fit-content;
     top: 63px;
     transform: translate(-24px);
-    z-index: 2;
+    z-index: 5;
 }
 
 .currency-symbol {
@@ -234,7 +270,7 @@ Cart Overlay
   display: block;
   position: absolute;
   top: 40px;
-  right: 0;
+  right: -100px;
   width: 325px;
   height: auto;
   background: var(--c-white);
@@ -257,7 +293,7 @@ Cart Overlay
   flex-direction: column;
   row-gap: 30px;
   margin: 17px 0;
-  max-height: 387px;
+  max-height: 50vh;
   overflow-y: auto;
   scrollbar-width: thin;
   cursor: default;
@@ -386,6 +422,7 @@ Cart Overlay
 
 .overlay-total {
   margin: -5px 0 24px 0;
+  padding-top: 10px;
       display: flex;
       width: 100%;
       justify-content: space-between;
@@ -416,6 +453,7 @@ Cart Overlay
   max-width: 100%;
   justify-content: space-between;
   grid-template-columns: repeat(auto-fill, 135px);
+  padding-top: 18px;
 }
 
 .total-btn {
@@ -429,6 +467,7 @@ Cart Overlay
   text-align: center;
   text-transform: uppercase;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .total-btn.view-bag {
@@ -545,16 +584,21 @@ Product Pages (All, Clothes, Tech)
   font-weight: 400;
   font-size: 42px;
   line-height: 160%;
+  min-height: fit-content;
   color: var(--c-text);
   text-transform: capitalize;
   margin-left: 82px;
 }
 
 .product-items {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  margin: 100px;
+  justify-content: space-between;
+  grid-template-columns: repeat(3, 390px);
+  column-gap: 40px;
+  row-gap: 100px;
   margin-top: 30px;
-  margin-left: -50px;
+  margin-left: 30px;
 }
 
 .product-grid {
@@ -562,6 +606,11 @@ Product Pages (All, Clothes, Tech)
   margin: auto;
   text-align: start;
   padding: 19px 8px;
+}
+
+.product-grid-stock {
+  box-shadow: none;
+  transform: none;
 }
 
 .product-grid:hover {
@@ -577,24 +626,41 @@ Product Pages (All, Clothes, Tech)
   align-items: center;
   background: var(--c-white);
   padding: 16px;
-  width: 386px;
-  height: 444px;
   background: var(--c-white);
   padding: 16px;
   width: 386px;
   height: 444px;
 }
 
+.product-container-stock {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .image-container {
+  display: flex;
+  justify-content: center;
+  height: 350px;
+  width: 400px;
+  overflow: hidden;
   position: relative;
 }
 
 .photo {
-  height: 350px;
-  width: 400px;
-  object-fit: contain;
+  object-fit: cover;
+  margin: auto;
+  max-height: 100%;
   border-radius: 8px;
   max-width: 100%;
+}
+
+.photo-stock {
+  object-fit: cover;
+  margin: auto;
+  max-height: 100%;
+  border-radius: 8px;
+  max-width: 100%;
+  cursor: default;
 }
 
 .stock {
@@ -619,6 +685,10 @@ Product Pages (All, Clothes, Tech)
   cursor: pointer;
 }
 
+.cart-icon-stock {
+  display: none;
+}
+
 .product-container:hover>.cart-icon {
   display: block;
 }
@@ -628,11 +698,19 @@ Product Pages (All, Clothes, Tech)
   transform: scale(1.08);
 }
 
+.product-section {
+  cursor: pointer;
+}
+
 .product-details {
   text-align: start;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.product-detals-stock {
+  cursor: default;
 }
 
 .product-name {
@@ -663,41 +741,59 @@ Single Product Page
   display: flex;
   justify-content: space-between;
   padding: 0px 26px;
+  margin-top: 40px;
 }
 
 .image-section {
   display: flex;
   width: 60%;
-  margin-left: 70px;
+  margin-left: 60px;
 }
 
 .small-images {
+  position: absolute;
   display: flex;
   flex-direction: column;
-  min-width: 150px;
-  width: 100px;
+  min-width: 80px;
+  width: 80px;
   height: 100%;
-  row-gap: 10px;
+  margin-right: 40px;
+  row-gap: 30px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
+.small-images::-webkit-scrollbar {
+  width: 0px;
+}
+
+.new-img-container {
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+}
+
 .small-img {
-  height: 10vh;
   object-fit: contain;
+  max-height: 100%;
+  max-width: 100%;
+  height: 90px;
+  width: 90px;
   padding-bottom: 1rem;
   cursor: pointer;
 }
 
 .main-img {
-  height: 65vh;
-  width: 40vw;
+  height: 70vh;
+  width: 45vw;
   object-fit: contain;
-  padding: 0px 30px;
+  margin-left: 40px;
 }
 
 .single-product-details {
   width: 100%;
+  margin-left: 120px;
 }
 
 .single-product-brand {
@@ -767,7 +863,6 @@ Single Product Page
 .add-to-cart:hover {
   background: #6db259f6;
   color: var(--c-text);
-
 }
 
 .out-of-stock {

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
 import OverlayAttributes from "./attributes/OverlayAttributes";
 
@@ -13,6 +12,10 @@ class CartOverlay extends Component {
 
   render() {
     const { cartItems, symbol } = this.props;
+
+    const cartRoute = () => {
+      window.location.replace("/cart");
+    };
 
     const quantityReducer = (accumulator, value) => {
       accumulator = accumulator + value.quantity;
@@ -96,9 +99,9 @@ class CartOverlay extends Component {
           <b>{`${symbol}${totalAmount}`}</b>
         </div>
         <div className="total-btns">
-          <Link className="total-btn view-bag" to="/cart">
+          <span onClick={() => cartRoute()} className="total-btn view-bag">
             view bag{" "}
-          </Link>
+          </span>
           <button
             className="total-btn check-out"
             onClick={() => this.props.clearCart()}

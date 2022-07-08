@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { client } from "@tilework/opus";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { GET_CATEGORIES, GET_PRODUCTS, GET_CURRENCIES } from "./queries/config";
+import { GET_CATEGORIES, GET_CURRENCIES } from "./queries/config";
 
 import Navigation from "./components/Navigation";
-import All from "./components/All";
-import Clothes from "./components/Clothes";
-import Tech from "./components/Tech";
+import PLP from "./components/PLP";
 import Product from "./components/Product";
 import Cart from "./components/Cart";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -15,7 +13,6 @@ import ErrorPage from "./components/ErrorPage";
 class App extends Component {
   state = {
     category: [],
-    products: [],
     currency: [],
     symbol: "$",
     cartItems: [],
@@ -24,10 +21,6 @@ class App extends Component {
   componentDidMount() {
     client.post(GET_CATEGORIES).then(({ categories }) => {
       this.setState({ category: categories.map((category) => category.name) });
-    });
-
-    client.post(GET_PRODUCTS).then(({ categories }) => {
-      this.setState({ products: categories });
     });
 
     client.post(GET_CURRENCIES).then(({ currencies }) => {
@@ -50,7 +43,7 @@ class App extends Component {
   };
 
   render() {
-    const { category, products, currency, symbol, cartItems } = this.state;
+    const { category, currency, symbol, cartItems } = this.state;
 
     const onSymbolChange = (symbol) => {
       let result = currency.map((c) =>
@@ -110,8 +103,6 @@ class App extends Component {
 
     return !category.length ? (
       <h1>Loading...</h1>
-    ) : !products.length ? (
-      <h1>Loading...</h1>
     ) : !currency.length ? (
       <h1>Loading...</h1>
     ) : (
@@ -132,8 +123,8 @@ class App extends Component {
               <Route
                 path="/"
                 element={
-                  <All
-                    products={products}
+                  <PLP
+                    categoryName={category[0]}
                     symbol={symbol}
                     handleCart={handleCart}
                   />
@@ -142,8 +133,8 @@ class App extends Component {
               <Route
                 path={`/${category[1]}`}
                 element={
-                  <Clothes
-                    products={products}
+                  <PLP
+                    categoryName={category[1]}
                     symbol={symbol}
                     handleCart={handleCart}
                   />
@@ -152,8 +143,8 @@ class App extends Component {
               <Route
                 path={`/${category[2]}`}
                 element={
-                  <Tech
-                    products={products}
+                  <PLP
+                    categoryName={category[2]}
                     symbol={symbol}
                     handleCart={handleCart}
                   />
@@ -161,13 +152,7 @@ class App extends Component {
               />
               <Route
                 path="/:id"
-                element={
-                  <Product
-                    products={products}
-                    symbol={symbol}
-                    handleCart={handleCart}
-                  />
-                }
+                element={<Product symbol={symbol} handleCart={handleCart} />}
               />
               <Route
                 path="/cart"
