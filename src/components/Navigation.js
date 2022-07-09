@@ -90,15 +90,11 @@ class Navigation extends Component {
         <div className="nav-center">
           <ul className="categories">
             <li onClick={() => this.onBackdropClick()}>
-              {category.map((categoryName, index) => {
+              {category.map((categoryName) => {
                 return (
                   <NavLink
-                    to={
-                      categoryName === this.props.category[0]
-                        ? "/"
-                        : `/${categoryName}`
-                    }
-                    key={index}
+                    to={categoryName === "all" ? "/" : `/${categoryName}`}
+                    key={categoryName}
                   >
                     {categoryName}
                   </NavLink>

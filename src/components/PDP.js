@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "./withRouter";
 import { client } from "@tilework/opus";
 import { GET_PRODUCT_BY_ID } from "../queries/config";
 
@@ -7,7 +6,7 @@ import ProductAttributes from "./attributes/ProductAttributes";
 
 const parse = require("html-react-parser");
 
-class Product extends React.Component {
+class PDP extends React.Component {
   state = {
     products: undefined,
     image: "",
@@ -17,16 +16,14 @@ class Product extends React.Component {
   };
 
   componentDidMount() {
-    client
-      .post(GET_PRODUCT_BY_ID(this.props.match.params.id))
-      .then((response) => {
-        let { product } = response;
-        if (!product) return;
-        else {
-          this.setState({ products: product });
-          this.setState({ attributes: product.attributes });
-        }
-      });
+    client.post(GET_PRODUCT_BY_ID(this.props.productId)).then((response) => {
+      let { product } = response;
+      if (!product) return;
+      else {
+        this.setState({ products: product });
+        this.setState({ attributes: product.attributes });
+      }
+    });
   }
 
   onImageChange = (image) => {
@@ -165,4 +162,4 @@ class Product extends React.Component {
   }
 }
 
-export default withRouter(Product);
+export default PDP;

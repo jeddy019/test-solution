@@ -7,13 +7,18 @@ export const GET_CURRENCIES = new Query("currencies", true).addFieldList([
   "label",
 ]);
 
+export const GET_ID_BY_CATEGORY = (category) =>
+  new Query("category", true)
+    .addArgument("input", "String!", category)
+    .addField(new Field("products", true).addFieldList(["id", "category"]));
+
 export const GET_PRODUCT_BY_CATEGORY = (category) =>
   new Query("category", true)
     .addArgument("input", "CategoryInput", { title: category })
     .addField("name")
     .addField(
       new Field("products", true)
-        .addFieldList(["id", "brand", "name", "inStock", "gallery"])
+        .addFieldList(["id", "brand", "category", "name", "inStock", "gallery"])
         .addField(
           new Field("prices", true)
             .addField("amount")
@@ -26,7 +31,7 @@ export const GET_PRODUCT_BY_CATEGORY = (category) =>
 export const GET_PRODUCT_BY_ID = (id) =>
   new Query("product", true)
     .addArgument("id", "String!", id)
-    .addFieldList(["id", "brand", "name", "inStock", "description"])
+    .addFieldList(["id", "brand", "category", "name", "inStock", "description"])
     .addField(new Field("gallery", true))
     .addField(
       new Field("prices", true)

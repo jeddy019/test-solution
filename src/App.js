@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { client } from "@tilework/opus";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { GET_CATEGORIES, GET_CURRENCIES } from "./queries/config";
+import {
+  GET_CATEGORIES,
+  GET_CURRENCIES,
+  GET_ID_BY_CATEGORY,
+} from "./queries/config";
 
 import Navigation from "./components/Navigation";
 import PLP from "./components/PLP";
-import Product from "./components/Product";
+import PDP from "./components/PDP";
 import Cart from "./components/Cart";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ErrorPage from "./components/ErrorPage";
@@ -16,6 +20,7 @@ class App extends Component {
     currency: [],
     symbol: "$",
     cartItems: [],
+    productRoutes: null,
   };
 
   componentDidMount() {
@@ -26,6 +31,14 @@ class App extends Component {
     client.post(GET_CURRENCIES).then(({ currencies }) => {
       this.setState({ currency: currencies });
     });
+
+    client
+      .post(GET_ID_BY_CATEGORY(this.state.category[0]))
+      .then(({ category: { products } }) => {
+        this.setState({
+          productRoutes: [...products],
+        });
+      });
 
     if (localStorage.cart) {
       this.setState({ cartItems: JSON.parse(localStorage.cart) || [] });
@@ -43,7 +56,7 @@ class App extends Component {
   };
 
   render() {
-    const { category, currency, symbol, cartItems } = this.state;
+    const { category, currency, symbol, cartItems, productRoutes } = this.state;
 
     const onSymbolChange = (symbol) => {
       let result = currency.map((c) =>
@@ -105,6 +118,8 @@ class App extends Component {
       <h1>Loading...</h1>
     ) : !currency.length ? (
       <h1>Loading...</h1>
+    ) : productRoutes === null ? (
+      <h1>Loading...</h1>
     ) : (
       <>
         <Router>
@@ -120,40 +135,38 @@ class App extends Component {
           />
           <ErrorBoundary>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <PLP
-                    categoryName={category[0]}
-                    symbol={symbol}
-                    handleCart={handleCart}
+              {category.map((categoryName) => {
+                const route = categoryName === "all" ? "/" : categoryName;
+                return (
+                  <Route
+                    path={`/${route}`}
+                    key={categoryName}
+                    element={
+                      <PLP
+                        categoryName={categoryName}
+                        symbol={symbol}
+                        handleCart={handleCart}
+                      />
+                    }
                   />
-                }
-              />
-              <Route
-                path={`/${category[1]}`}
-                element={
-                  <PLP
-                    categoryName={category[1]}
-                    symbol={symbol}
-                    handleCart={handleCart}
+                );
+              })}
+              {productRoutes.map((product) => {
+                const { category, id } = product;
+                return (
+                  <Route
+                    path={`/${category}/${id}`}
+                    key={id}
+                    element={
+                      <PDP
+                        productId={id}
+                        symbol={symbol}
+                        handleCart={handleCart}
+                      />
+                    }
                   />
-                }
-              />
-              <Route
-                path={`/${category[2]}`}
-                element={
-                  <PLP
-                    categoryName={category[2]}
-                    symbol={symbol}
-                    handleCart={handleCart}
-                  />
-                }
-              />
-              <Route
-                path="/:id"
-                element={<Product symbol={symbol} handleCart={handleCart} />}
-              />
+                );
+              })}
               <Route
                 path="/cart"
                 element={

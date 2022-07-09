@@ -79,7 +79,8 @@ class PLP extends Component {
         <h2 className="category-name">{this.props.categoryName}</h2>
         <div className="product-items">
           {products.map((product) => {
-            const { id, name, inStock, brand, gallery, prices } = product;
+            const { id, name, inStock, category, brand, gallery, prices } =
+              product;
             return (
               <section
                 key={id}
@@ -92,7 +93,7 @@ class PLP extends Component {
                 >
                   <section
                     className="product-section"
-                    onClick={() => productRoute(`/${id}`)}
+                    onClick={() => productRoute(`/${category}/${id}`)}
                   >
                     <div className="image-container">
                       <img
@@ -109,7 +110,7 @@ class PLP extends Component {
                   />
                   <section
                     className="product-section"
-                    onClick={() => productRoute(`/${id}`)}
+                    onClick={() => productRoute(`/${category}/${id}`)}
                   >
                     <div className="product-details">
                       <p className="product-name">{`${brand} ${name}`}</p>

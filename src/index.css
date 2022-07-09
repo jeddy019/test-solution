@@ -570,7 +570,7 @@ Cart Overlay Attributes
 
 /* 
 ====== 
-Product Pages (All, Clothes, Tech)
+Product Listing Page
 ======
 */
 
@@ -595,14 +595,23 @@ Product Pages (All, Clothes, Tech)
   margin: 100px;
   justify-content: space-between;
   grid-template-columns: repeat(3, 390px);
-  column-gap: 40px;
-  row-gap: 100px;
+  gap: 100px 50px;
   margin-top: 30px;
   margin-left: 30px;
 }
 
+@media screen and (max-width: 800px) {
+  .product-items {
+    gap: 30px 30px;
+  }
+}
+
 .product-grid {
-  margin: 20px 30px;
+  height: 440px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 354px 1fr 1fr;
+  cursor: pointer;
   margin: auto;
   text-align: start;
   padding: 19px 8px;
@@ -623,7 +632,6 @@ Product Pages (All, Clothes, Tech)
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: center;
   background: var(--c-white);
   padding: 16px;
   background: var(--c-white);
@@ -729,11 +737,11 @@ Product Pages (All, Clothes, Tech)
   color: var(--c-text);
 }
 
-/* End of Product Pages (All, Clothes, Tech) */
+/* End of Product Listing Page */
 
 /* 
 ====== 
-Single Product Page 
+Product Description Page
 ======
 */
 
@@ -919,11 +927,11 @@ Single Product Page
   margin-bottom: 1em;
 }
 
-/* End of Single Product Page */
+/* End of Product Description Page */
 
 /* 
 ====== 
-Single Product Attributes 
+Product Description Page Attributes 
 ======
 */
 
@@ -981,7 +989,7 @@ input {
     0 0 0 2px var(--c-primary);
 }
 
-/* End of Single Product Attributes */
+/* End of Product Description Page Attributes */
 
 /* 
 ====== 
