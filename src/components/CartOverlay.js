@@ -56,9 +56,9 @@ class CartOverlay extends Component {
                         {item.brand}
                         <br /> {item.name}
                       </div>
-                      <span className="overlay-price">
+                      <b className="overlay-price">
                         {`${symbol}${this.getPrice(item.prices)}`}
-                      </span>
+                      </b>
                       <div className="overlay-attributes">
                         <OverlayAttributes
                           attributes={item.attributes}

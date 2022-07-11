@@ -184,7 +184,7 @@ Navigation
   font-weight: 700;
   font-size: 14px;
   color: var(--c-white);
-  left: 43.5px;
+  left: 43px;
   top: 33.5px;
 }
 
@@ -342,10 +342,8 @@ Cart Overlay
 .overlay-price {
   font-style: normal;
   margin: 5px 0;
-  font-weight: 500;
   font-size: 16px;
   line-height: 160%;
-  flex-shrink: 0;
   color: var(--c-text);
 }
 
@@ -423,10 +421,10 @@ Cart Overlay
 .overlay-total {
   margin: -5px 0 24px 0;
   padding-top: 10px;
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      align-items: baseline;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .overlay-total b:first-child {
@@ -525,6 +523,8 @@ Cart Overlay Attributes
 
 .overlay-attributes-list {
   display: flex;
+  align-items: center;
+  margin: 8px 0;
 }
 
 .overlay-attributes-list div:not(.overlay-attributes-list div:last-child) {
