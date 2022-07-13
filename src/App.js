@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { client } from "@tilework/opus";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import {
-  GET_CATEGORIES,
-  GET_CURRENCIES,
-  GET_ID_BY_CATEGORY,
-} from "./queries/config";
+import { GET_CATEGORIES, GET_CURRENCIES, GET_ID } from "./queries/config";
 
 import Navigation from "./components/Navigation";
 import PLP from "./components/PLP";
@@ -20,7 +16,7 @@ class App extends Component {
     currency: [],
     symbol: "$",
     cartItems: [],
-    productRoutes: null,
+    productRoutes: {},
   };
 
   componentDidMount() {
@@ -33,11 +29,15 @@ class App extends Component {
     });
 
     client
-      .post(GET_ID_BY_CATEGORY(this.state.category[0]))
-      .then(({ category: { products } }) => {
-        this.setState({
-          productRoutes: [...products],
-        });
+      .post(GET_ID(window.location.pathname.split("/").slice(-1)[0]))
+      .then((response) => {
+        let { product } = response;
+        if (!product) return;
+        else {
+          this.setState({
+            productRoutes: product,
+          });
+        }
       });
 
     if (localStorage.cart) {
@@ -46,6 +46,8 @@ class App extends Component {
 
     window.addEventListener("beforeunload", this.handleLocalStorage);
   }
+
+  componentDidUpdate() {}
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.handleLocalStorage);
@@ -118,8 +120,6 @@ class App extends Component {
       <h1>Loading...</h1>
     ) : !currency.length ? (
       <h1>Loading...</h1>
-    ) : productRoutes === null ? (
-      <h1>Loading...</h1>
     ) : (
       <>
         <Router>
@@ -151,22 +151,16 @@ class App extends Component {
                   />
                 );
               })}
-              {productRoutes.map((product) => {
-                const { category, id } = product;
-                return (
-                  <Route
-                    path={`/${category}/${id}`}
-                    key={id}
-                    element={
-                      <PDP
-                        productId={id}
-                        symbol={symbol}
-                        handleCart={handleCart}
-                      />
-                    }
+              <Route
+                path={`/${productRoutes.category}/${productRoutes.id}`}
+                element={
+                  <PDP
+                    productId={productRoutes.id}
+                    symbol={symbol}
+                    handleCart={handleCart}
                   />
-                );
-              })}
+                }
+              />
               <Route
                 path="/cart"
                 element={
