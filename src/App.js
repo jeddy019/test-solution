@@ -47,8 +47,6 @@ class App extends Component {
     window.addEventListener("beforeunload", this.handleLocalStorage);
   }
 
-  componentDidUpdate() {}
-
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.handleLocalStorage);
   }
