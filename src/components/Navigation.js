@@ -7,25 +7,44 @@ import { ReactComponent as CurrencyArrow } from "../svg/currency-arrow.svg";
 import { ReactComponent as NavCart } from "../svg/nav-cart.svg";
 
 class Navigation extends Component {
-  state = {
-    backdrop: false,
-    currencyToggle: false,
-    cartOverlay: false,
-    isTop: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      backdrop: false,
+      currencyToggle: false,
+      cartOverlay: false,
+      isTop: true,
+    };
+
+    this.currencyRef = React.createRef();
+  }
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
+    document.addEventListener("mousedown", this.closeOutsideComponent);
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    document.removeEventListener("mousedown", this.closeOutsideComponent);
   }
 
   handleScroll = () => {
     const isTop = window.scrollY < 100;
     if (isTop !== this.state.isTop) {
       this.setState({ isTop });
+    }
+  };
+
+  closeOutsideComponent = (e) => {
+    if (this.currencyRef && !this.currencyRef.current.contains(e.target)) {
+      if (this.state.currencyToggle === true) {
+        this.setState({
+          backdrop: false,
+          currencyToggle: false,
+          cartOverlay: false,
+        });
+      }
     }
   };
 
@@ -106,7 +125,11 @@ class Navigation extends Component {
           <div className="right">
             <div className="currency-container">
               <span>{symbol}</span>
-              <div className="currency" onClick={onCurrencyToggle}>
+              <div
+                className="currency"
+                onClick={onCurrencyToggle}
+                ref={this.currencyRef}
+              >
                 <button
                   className={`currency-arrow${currencyToggle ? " rotate" : ""}`}
                 >
@@ -116,6 +139,7 @@ class Navigation extends Component {
                   <Currency
                     currency={this.props.currency}
                     onSymbolChange={this.props.onSymbolChange}
+                    onCurrencyToggle={onCurrencyToggle}
                   />
                 )}
               </div>
