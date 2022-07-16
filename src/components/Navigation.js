@@ -139,7 +139,6 @@ class Navigation extends Component {
                   <Currency
                     currency={this.props.currency}
                     onSymbolChange={this.props.onSymbolChange}
-                    onCurrencyToggle={onCurrencyToggle}
                   />
                 )}
               </div>
