@@ -44,6 +44,10 @@ class App extends Component {
       this.setState({ cartItems: JSON.parse(localStorage.cart) || [] });
     }
 
+    if (localStorage.symbol) {
+      this.setState({ symbol: JSON.parse(localStorage.symbol) || "$" });
+    }
+
     window.addEventListener("beforeunload", this.handleLocalStorage);
   }
 
@@ -53,6 +57,7 @@ class App extends Component {
 
   handleLocalStorage = () => {
     localStorage.setItem("cart", JSON.stringify(this.state.cartItems));
+    localStorage.setItem("symbol", JSON.stringify(this.state.symbol));
   };
 
   render() {
@@ -66,6 +71,7 @@ class App extends Component {
     };
 
     const clearCart = () => {
+      console.log(this.state.cartItems);
       this.setState({ cartItems: [] });
     };
 

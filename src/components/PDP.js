@@ -115,6 +115,7 @@ class PDP extends React.Component {
             className="main-img"
           />
         </div>
+        {!products.inStock && <p className="out-of-stock">out of stock</p>}
         <div className="single-product-details">
           <h2 className="single-product-brand">{products.brand}</h2>
           <br />
@@ -153,7 +154,9 @@ class PDP extends React.Component {
               )}
             </>
           ) : (
-            <button className="out-of-stock">out of stock</button>
+            <button disabled className="add-to-cart">
+              add to cart
+            </button>
           )}
           <div className="description">{parse(products.description)}</div>
         </div>

@@ -39,10 +39,6 @@ class Cart extends Component {
     ) : (
       <div className="cart">
         <h1 className="cart-tag">cart</h1>
-        <div className="grey-line">
-          <hr width="auto" color="#E5E5E5" size="1" />
-        </div>
-        <div></div>
         {cartItems.length === 0 ? (
           <h2>Cart Is Empty</h2>
         ) : (
