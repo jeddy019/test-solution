@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { client } from "@tilework/opus";
 import { GET_PRODUCT_BY_ID } from "../queries/config";
 
@@ -6,7 +6,7 @@ import ProductAttributes from "./attributes/ProductAttributes";
 
 const parse = require("html-react-parser");
 
-class PDP extends React.Component {
+class PDP extends Component {
   state = {
     products: undefined,
     image: "",

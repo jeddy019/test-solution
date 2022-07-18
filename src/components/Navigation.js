@@ -123,26 +123,24 @@ class Navigation extends Component {
           </ul>
           <Logo />
           <div className="right">
-            <div className="currency-container">
-              <span>{symbol}</span>
-              <div
+            <>
+              <button
                 className="currency"
                 onClick={onCurrencyToggle}
                 ref={this.currencyRef}
               >
-                <button
+                <span>{symbol}</span>
+                <CurrencyArrow
                   className={`currency-arrow${currencyToggle ? " rotate" : ""}`}
-                >
-                  <CurrencyArrow />
-                </button>
+                />
                 {currencyToggle && (
                   <Currency
                     currency={this.props.currency}
                     onSymbolChange={this.props.onSymbolChange}
                   />
                 )}
-              </div>
-            </div>
+              </button>
+            </>
             <div className="dropdown">
               <button onClick={onCartToggle} className="nav-cart">
                 {cartItems.length === 0 ? (
