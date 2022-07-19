@@ -232,7 +232,6 @@ Currency
   background: var(--c-white);
   height: 45px;
   width: 110px;
-  border: none;
   text-align: left;
   padding-left: 16px;
   transition: all 200ms ease-in-out;
@@ -258,7 +257,7 @@ Cart Overlay
 .cart-overlay {
   display: block;
   position: absolute;
-  top: 40px;
+  top: 39px;
   right: -100px;
   width: 325px;
   height: auto;
@@ -281,8 +280,8 @@ Cart Overlay
   display: flex;
   flex-direction: column;
   row-gap: 30px;
+  max-height: 45vh;
   margin: 17px 0;
-  max-height: 50vh;
   overflow-y: auto;
   scrollbar-width: thin;
   cursor: default;
@@ -915,7 +914,7 @@ Product Description Page
   margin-bottom: 1em;
 }
 
-ul {
+.description ul {
   margin: 0;
   padding-left: 20px;
 }
